@@ -1,0 +1,5 @@
+@(id: Int, title: String)(implicit lang: Lang)
+
+@main(title) {
+   <iframe width="100%" height="800px" src="@(Application.STATIC_URL)html/@(id.toString).html" seamless="seamless"></iframe>
+}

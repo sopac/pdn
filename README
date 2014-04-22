@@ -1,0 +1,23 @@
+Pacific Disaster Net
+====================
+
+Pacific Disaster Net is the - Virtual Centre of Excellence - for Disaster Risk Management in the Pacific Region. The Web Portal and Database System is designed to be the largest and most comprehensive information resource for Disaster Risk Management for the Pacific Island Countries.
+
+It is a living collection and growing DRM information resource for actors and stakeholders to research and collaborate and improve Information and Knowledge Management. It also supports National Action Planning, Decision Making and provides in-country information for distribution within the region.
+
+It is available online and will be available offline as frequently updated DVD distribution. The Pacific Disaster Net hosts material relating from various sources like Countries, Bodies, Organizations and Agencies at regional, national and international level, relating to - Governance, Risk Assessment, Early Warning and Monitoring, Disaster Risk Management, Training and Tools.
+
+Platform:
+########
+Play Framework 2.2.2
+Scala 2.10.4
+PostgreSQL
+Apache Solr
+
+------------------------------------------------
+Applied GeoScience and Technology Division, Secretariat of the Pacific Community
+© AGTD/SPC 2014
+------------------------------------------------
+Sachindra Singh | Systems Developer
+sachindras@spc.int
+------------------------------------------------

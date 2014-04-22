@@ -1,0 +1,5 @@
+@(id: Int, title: String, file: String)(implicit lang: Lang)
+
+@main(title) {
+   <iframe width="100%" height="900px" src='@(routes.Assets.at("viewer/web/viewer.html?file="))@routes.Application.download(file)' seamless="seamless"></iframe>
+}

@@ -1,0 +1,27 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home
+GET     /                           controllers.Application.index
+GET     /testDoc	                controllers.Application.testDocument
+GET     /photo/:id/:model           controllers.Application.photo(id: Int, model: String)
+GET     /download/:file				controllers.Application.download(file: String)
+
+#Show
+GET     /wiki/:id					controllers.Application.showWiki(id: Int)
+GET     /alert/:id					controllers.Application.showAlert(id: Int)
+GET     /document/:id				controllers.Application.showDocument(id: Int)
+GET     /documentText/:id			controllers.Application.showDocumentText(id: Int)
+GET     /documentHtml/:id			controllers.Application.showDocumentHtml(id: Int)
+GET     /documentView/:id			controllers.Application.showDocumentViewer(id: Int)
+
+
+#List
+GET     /alerts						controllers.Application.listAlert(page: Int ?= 0, num: Int ?= 10, sort: String ?= "alert.daterecieved", sortType: String ?= "desc", filter: String ?= "")
+GET     /documents					controllers.Application.listDocument(page: Int ?= 0, num: Int ?= 10, sort: String ?= "id", sortType: String ?= "desc", filter: String ?= "")
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

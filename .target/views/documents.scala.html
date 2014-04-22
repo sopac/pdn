@@ -1,0 +1,183 @@
+@(documents: List[Document], page: Int, total: Int, sort: String, sortType: String, filterString: String, filterPublished: List[String], filterMaterial: List[String], filterLanguage: List[String])(implicit lang: Lang)
+@import java.util.Date
+
+@main("Documents") {
+	
+	@if(!filterString.equals("")){
+		<h3>Displaying <i><u>@filterString.split(":")(1)</u></i> Documents</h3>
+	}
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+		
+
+	<div style="background-color: lightblue; text-align: center; font-weight: normal; padding: 5px">
+	@*
+	<a href="#" onclick="$('#filterUpload').toggle();$('#filterPublished').hide();$('#filterMaterial').hide();$('#filterLanguage').hide();">Filter By Upload Year</a>
+	|
+	*@
+	<a href="#" onclick="$('#filterPublished').toggle();$('#filterUpload').hide();$('#filterMaterial').hide();$('#filterLanguage').hide();">Filter By Publication Year</a>
+	|
+	<a href="#" onclick="$('#filterMaterial').toggle();$('#filterUpload').hide();$('#filterPublished').hide();$('#filterLanguage').hide();">Filter By Material Type</a>
+	|
+	<a href="#" onclick="$('#filterLanguage').toggle();$('#filterUpload').hide();$('#filterPublished').hide();$('#filterMaterial').hide();">Filter By Language</a>
+	|
+	<a href="/documents?page=@page&sortType=desc&filter=@filterString">Sort By Latest</a>
+	| 
+	<a href="/documents?page=@page&sortType=asc&filter=@filterString">Sort By Oldest</a>
+	
+	</div>
+	
+	
+	
+@*
+	<div id="filterUpload" style="display: none">
+	<br/>
+	<select id="selectUpload" placeHolder="Select Upload Year..." onchange="window.location='/documents?page=@page&total=@total&sort=@sort&sortType=@sortType&filter=publicationyear:' + $(this).val()">
+	<option disabled selected value="">Select Upload Year...</option>
+	@filterUpload.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectUpload').selectize();
+	</script>
+	</div>
+*@	
+	<div id="filterPublished" style="display: none">
+	<br/>
+	<select id="selectPublished" placeHolder="Select Published Year..." onchange="window.location='/documents?page=@page&total=@total&sort=@sort&sortType=@sortType&filter=publicationyear:' + $(this).val()">
+	<option disabled selected value="">Select Published Year...</option>
+	@filterPublished.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectPublished').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+	
+	<div id="filterMaterial" style="display: none">
+	<br/>
+	<select id="selectMaterial" placeHolder="Select Material Type..." onchange="window.location='/documents?page=@page&total=@total&sort=@sort&sortType=@sortType&filter=materialtype:' + $(this).val()">
+	<option disabled selected value="">Select Material Type...</option>
+	@filterMaterial.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectMaterial').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+	
+	<div id="filterLanguage" style="display: none">
+	<br/>
+	<select id="selectLanguage" placeHolder="Select Language..." onchange="window.location='/documents?page=@page&total=@total&sort=@sort&sortType=@sortType&filter=language:' + $(this).val()">
+	<option disabled selected value="">Select Language...</option>
+	@filterLanguage.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectLanguage').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+
+	<br/>
+	@documents.map { d =>
+		<a href="@routes.Application.showDocument(d.id.get)">
+		<img onerror="this.src='@routes.Assets.at("images/pdn.png")';" align="left"  style="padding-right: 5px;  width: 100px !important; height: 130px; border-color: black; border-width: 1px; border-style: solid; margin-right: 5px;" border="1" src='@routes.Application.photo(id=d.id.get, model="document")'/>
+		</a>
+		<h3 style="font-size: 16px !important; margin-top: -3px;"><a href="@routes.Application.showDocument(d.id.get)">@d.title.get</a></h3>
+		
+		<p align="justify" style="height: 85px">
+		@{
+			val len = 360
+			if (d.description.get.length() >= len) {
+				d.description.get.substring(0, len) + " ..."
+			} else {
+				d.description.get
+			}		
+		}
+		<div style="text-align: right; margin-top: -20px">
+		<a onclick="$('#more@d.id.get').toggle()" style="text-align: right; width: 100%">Show/Hide More Information</a>
+		</div>	
+		</p>
+		
+		
+		<div id="more@d.id.get" style="display: none;" align="right" style="background: #ebebeb; padding: 3px;">
+		<table style="width: 100%; background: #ebebeb; text-align: left; ">
+			<tr>
+				<td style="width: 110px"></td>
+				<td><b>Uploaded</b></td>
+				<td>@d.uploaddate.get.toString().split(" ")(0)</td>
+				<td><b>Author</b> </td>
+				<td>@{
+						val authorList = DocumentAuthors.listDocumentAuthor(d.id.get)
+						var authors: String = ""
+						authorList.map { da =>
+							authors += da.name.get + " " 
+						}	 
+						if (authorList.size == 0){
+							authors = "<i>None</i>"
+						}
+						if (authors.trim().equals("")){
+							authors = "<i>None</i>"
+						}
+						Html(authors)
+					}		
+				</td>
+				
+			</tr>
+			<tr>
+				<td></td>
+				<td><b>Published</b></td>
+				<td>@d.publicationyear.get-@d.publicationmonth.get-@d.publicationday.get</td>
+				<td><b>Publisher</b></td>
+				<td>@d.publisher.get</td>
+			</tr>
+		</table>
+		</div>
+		
+		
+		
+		<br/>
+		
+		
+	
+	
+	}
+	
+	<br/><br/>	
+	<div style="background-color: lightblue; font-weight: bold; text-align: center; padding: 5px">
+	Page: @(page + 1) | Displayed: @documents.size | Total: @total 
+	</div>
+	</article>
+	
+	<br/>
+	
+	
+	
+	
+	<div align="center" id="pager"></div>
+	<script type="text/javascript">
+		$("#pager").wPaginate({
+    	theme: 'blue',
+    	total: @total,
+    	//index: 40,
+    	limit: 10,
+    	url: function(i){ return '/documents?page=' + i + '&total=@total&sort=@sort&sortType=@sortType&filter=@filterString'; } 
+		});
+ 	</script>
+ 	
+ 	
+ }
+ 	
+ 	
+ 	
+	  
+

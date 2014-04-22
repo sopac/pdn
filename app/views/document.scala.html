@@ -1,0 +1,135 @@
+@(d: Document, misc: DocumentMisc, authors: List[DocumentAuthors], materialType: DocumentMaterialType, cataloguer: DocumentUser)(implicit lang: Lang)
+@import java.util.Date
+
+@main("" + d.title.get) {
+	
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+	
+	<img onerror="this.src='@routes.Assets.at("images/pdn.png")';" align="left"  style="padding-right: 5px; float: left;" src='@routes.Application.photo(id=d.id.get, model="document")'/>
+	
+	<h3>@d.title.get</h3>
+	<i>@d.varianttitle.filterNot(_.isEmpty).getOrElse("No Variant Title")</i><br/>
+	<p align="justify">@d.description.get</p>
+	<p style="font-weight: bolder; font-variant: small-caps; font-size: 120%">
+	@authors.map { a=>
+		@a.name | 	
+	}
+	@(if(authors.size == 0) "No Author(s) Specified.")
+	</p>
+	
+	<div>
+	<a href="@routes.Application.download(d.filename.get)" class="button"><b>&#9755; Download</b></a>
+	<a href="@routes.Application.showDocumentViewer(d.id.get)" class="button" style="background-color: blue">&#9737; View Online</a>
+	<a href="@routes.Application.showDocumentHtml(d.id.get)" class="button" style="background-color: yellow; color: black">&#9737; HTML</a>
+	<a href="@routes.Application.showDocumentText(d.id.get)" class="button" style="background-color: green">&#9997; Text</a>
+	<a href='mailto:pdn&#64;spc.int?subject= - Pacific Disaster Net - @d.title.get&body=@d.title.get%0D%0A%0D%0A@d.description.get%0D%0A%0D%0A@Application.STATIC_URL.replace("static/", "document/")@d.id.get' class="button" style="background-color: lightgray; color: black">&#64; Email</a>
+	<a href="#" class="button" style="background-color: lightblue; color: black">&#10084; Like</a>
+	</div>
+	<br/>
+	
+	<div align="left">
+	<table style="width: 100%; background-color: lightgray; padding: 5px" cellpadding="4px">
+		<tr>
+			<td><b>Published</b></td>
+			<td>@d.publicationday.get/@d.publicationmonth.get/@d.publicationyear.get</td>
+			<td><b>Uploaded</b</td>
+			<td>@d.uploaddate.get.toString().split(" ")(0)</td>
+		</tr>
+		<tr>
+			<td><b>ISBN</b></td>
+			<td>@d.isbn.filterNot(_.isEmpty).getOrElse("None")</td>
+			<td><b>ISSN</b</td>
+			<td>@d.issn.filterNot(_.isEmpty).getOrElse("None")</td>
+		</tr>
+		<tr>
+			<td><b>Corporate Author</b></td>
+			<td>@d.corporateauthor.filterNot(_.isEmpty).getOrElse("None")</td>
+			<td><b>Publisher</b</td>
+			<td>@d.publisher.filterNot(_.isEmpty).getOrElse("None")</td>
+		</tr>
+		<tr>
+			<td><b>Related Names</b></td>
+			<td>@d.relatednames.filterNot(_.isEmpty).getOrElse("None")</td>
+			<td><b>Related Corporations</b</td>
+			<td>@d.relatedcorporations.filterNot(_.isEmpty).getOrElse("None")</td>
+		</tr>
+		<tr>
+			<td><b>Series</b></td>
+			<td>@d.series.filterNot(_.isEmpty).getOrElse("None")</td>
+			<td><b>Source of Acquistion</b</td>
+			<td>@d.sourceofacquisition.filterNot(_.isEmpty).getOrElse("None")</td>
+		</tr>
+		<tr>
+			<td><b>General Note</b></td>
+			<td>@d.generalnote.filterNot(_.isEmpty).getOrElse("None")</td>
+			<td><b>Bibliography</b</td>
+			<td>@misc.bibliographynote.filterNot(_.isEmpty).getOrElse("None")</td>
+		</tr>
+		<tr>
+			<td><b>Tags</b></td>
+			<td>@d.catalougingsource.filterNot(_.isEmpty).getOrElse("None")</td>
+			<td><b>Edition</b</td>
+			<td>@misc.edition.filterNot(_.isEmpty).getOrElse("None")</td>
+		</tr>
+		<tr>
+			<td><b>Target Audience</b></td>
+			<td>@misc.targetaudience.filterNot(_.isEmpty).getOrElse("None")</td>
+			<td><b>Language</b</td>
+			<td>@(misc.language_id.get match {
+				case 1 => "English"
+				case 2 => "French"
+				case _ => "Unknown"
+				}			
+			)
+			</td>
+		</tr>
+		<tr>
+			<td><b>Cataouging Source</b></td>
+			<td>@d.catalougingsource.filterNot(_.isEmpty).getOrElse("None")</td>
+			<td><b>Identifier</b</td>
+			<td>@d.id.get</td>
+		</tr>
+		<tr>
+			<td><b>Material Type</b></td>
+			<td>@materialType.materialType.filterNot(_.isEmpty).getOrElse("None")</td>
+			<td><b>Cataloguer</b</td>
+			<td>@cataloguer.name.filterNot(_.isEmpty).getOrElse("None")</td>
+		</tr>
+	</table>
+	<br/>	
+	
+	<table style="width: 100%; background-color: lightgray; padding: 5px" cellpadding="4px">
+		<tr>
+			<td style="width: 200px"><b>Related Topics</b></td>
+			<td>None</td>
+		</tr>
+		<tr>
+			<td><b>Related Countries</b></td>
+			<td>None</td>
+		</tr>
+		<tr>
+			<td><b>Related Organisations</b></td>
+			<td>None</td>
+		</tr>
+		<tr>
+			<td><b>Related Meetings</b></td>
+			<td>None</td>
+		</tr>
+	</table>
+	
+	</div>
+	<br/>
+	
+	
+	
+	
+	<h3>Comments | 0 Likes</h3>
+	None
+	<br/><br/>
+	<a href="#">Login to post comments.</a>
+	
+	</article>
+	
+	
+  
+}

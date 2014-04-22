@@ -1,0 +1,111 @@
+@(alerts: List[Alert], page: Int, total: Int, filterString: String, filterSource: List[String], filterYear: List[String], filterCountry: List[String])(implicit lang: Lang)
+@import java.util.Date
+
+@main("Alerts") {
+	
+	@if(!filterString.equals("")){
+		<h3>Displaying <i><u>@filterString.split(":")(1)</u></i> Alerts</h3>
+	}
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+		
+	<div style="background-color: lightblue; text-align: center; font-weight: normal; padding: 5px">
+	<a href="#" onclick="$('#filterCountry').toggle();$('#filterSource').hide();$('#filterYear').hide();">Filter By Country</a>
+	|
+	<a href="#" onclick="$('#filterYear').toggle();$('#filterSource').hide();$('#filterCountry').hide()">Filter By Year</a>
+	|
+	<a href="#" onclick="$('#filterSource').toggle();$('#filterYear').hide();$('#filterCountry').hide()">Filter By Source</a>
+	|
+	<a href="/alerts?page=@page&sortType=desc">Sort By Latest</a>
+	| 
+	<a href="/alerts?page=@page&sortType=asc">Sort By Oldest</a>
+	|
+	<b>Search</b>
+	
+	
+	
+	</div>
+	
+	
+	
+	<div id="filterSource" style="display: none">
+	<br/>
+	<select id="selectSource" placeHolder="Select Source..." onchange="window.location='/alerts?filter=alertsource.name:' + $(this).val()">
+	<option disabled selected value="">Select Source...</option>
+	@filterSource.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectSource').selectize();
+	</script>
+	</div>
+	
+	<div id="filterYear" style="display: none">
+	<br/>
+	<select id="selectYear" placeHolder="Select Year..." onchange="window.location='/alerts?filter=alert.daterecieved:' + $(this).val()">
+	<option disabled selected value="">Select Year...</option>
+	@filterYear.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectYear').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+	
+	<div id="filterCountry" style="display: none">
+	<br/>
+	<select id="selectCountry" placeHolder="Select Country..." onchange="window.location='/alerts?filter=alert.countries:' + $(this).val()">
+	<option disabled selected value="">Select Country...</option>
+	@filterCountry.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectCountry').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+	
+	@alerts.map { a =>
+		
+		<h3><a href="@routes.Application.showAlert(a.id.get)">@a.subject</a></h3>
+		Recieved : @a.daterecieved | Source : @a.source_name | @a.id
+		<br/>
+		Countries : @a.countries.get.toString().replaceAll(";", " | ")
+	
+	
+	}
+	
+	<br/><br/>	
+	<div style="background-color: lightblue; font-weight: bold; text-align: center; padding: 5px">
+	Page: @(page + 1) | Displayed: @alerts.size | Total: @total 
+	</div>
+	</article>
+	
+	<br/>
+	
+	
+	@if(filterString.equals("")){
+	
+	<div align="center" id="pager"></div>
+	<script type="text/javascript">
+		$("#pager").wPaginate({
+    	theme: 'blue',
+    	total: @total,
+    	//index: 40,
+    	limit: 10,
+    	url: function(i){ return '/alerts?page=' + i + ''; } 
+		});
+ 	</script>
+ 	}
+ 	
+ }
+ 	
+ 	
+ 	
+	  
+

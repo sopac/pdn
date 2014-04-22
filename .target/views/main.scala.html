@@ -1,0 +1,111 @@
+@(title: String, search: Boolean = false)(content: Html)(implicit lang: Lang)
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>@title - Pacific Disaster Net</title>
+    
+    <link rel="shortcut icon" href="@routes.Assets.at("/images/favicon.ico")" type="image/x-icon" />
+    
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/selectize.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("javascripts/paginate/wPaginate.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    <script src="@routes.Assets.at("javascripts/jquery.min.js")" type="text/javascript"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="@routes.Assets.at("javascripts/modernizr.js")"></script>
+    <script src="@routes.Assets.at("javascripts/jquery.min.js")"></script>
+    <script src="@routes.Assets.at("javascripts/paginate/wPaginate.js")"></script>
+    <script src="@routes.Assets.at("javascripts/selectize.min.js")"></script>
+    
+          
+  </head>
+  <body>
+    
+    <header class="row narrow" role="banner">
+      <div itemscope itemtype="http://schema.org/Organization" class="site-logo">
+	<a itemprop="url" href="/">
+	  <img itemprop="logo" src="@routes.Assets.at("images/logo.png")">
+	</a>
+      </div>
+      <div class="tools">
+	<div class="tool-lang">
+	  <ul>
+	    <li><a href="/">English</a></li>
+	    <li lang="fr"><a href="fr.html">Français</a></li>
+	  </ul>
+	</div>
+	<div class="tool-authentication">
+	  <a href="/" class="pill invert">Login</a>
+	</div>
+      </div>
+    </header>
+    <div class="row nav-row">
+      <nav role="navigation" class="row">
+	<ul>
+	  <li class="active"><a href="/">Home</a></li>
+	  <li><a href="/">Documents</a></li>
+	  <li><a href="/">Multimedia</a></li>
+	  <li><a href="/">Calendar</a></li>
+	  <li><a href="/alerts">Alerts</a></li>
+	  <li><a href="/">Disasters</a></li>
+	  <li><a href="/">Contacts</a></li>
+	  <li><a href="/">Countries</a></li>
+<!--
+	  <li><a href="/"><b>My PDN</b></a></li>
+-->
+	</ul>
+      </nav>	
+    </div>
+
+    <div class="row from-center search-form">
+      <label for="search-query" style="margin-top: -30px">
+      @title
+      </label>
+      @if(search){
+      	<form style="margin-bottom: 20px" action="#" method="get" accept-charset="utf-8">
+			<input type="search" name="search-query" id="search-query" placeholder="Enter keyword/s">
+			<button type="submit" style="height: 43px !important; font-weight: bold" value="Search">Search</button>
+		    <button type="button" value="More options" class="pill">More options</button>
+		</form>
+		<div class="from-center site-message">
+			<p>PDN is an online portal of <b>disaster risk management</b> documents, images, videos, presentations and professionals for the Pacific region</p>
+		</div>
+      }
+    </div>
+  
+    <div class="row" style="max-width:940px; margin-left: auto ; margin-right: auto ;">
+      @content
+    </div>
+  
+<br/><br/>
+
+    <footer class="row from-center" style="padding-bottom: 20px !important;" role="contentinfo">
+      <nav>
+	<ul>
+ 	  <li><a href="index.html">PDN Wiki</a></li>
+	  <li><a href="index.html">Partners</a></li>
+	  <li><a href="index.html">Links</a></li>
+	  <li><a href="index.html">Chat</a></li>
+	  <li><a href="index.html">Contact Us</a></li>
+	  <li><a href="index.html">Help</a></li>
+	  <li><a href="index.html">About PDN</a></li>
+	</ul>
+      </nav>
+    </footer>
+
+	
+    <script src="@routes.Assets.at("javascripts/jquery.fs.naver.js")"></script>
+    <script src="@routes.Assets.at("javascripts/script.js")"></script>
+   
+    
+<!--
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+-->
+
+<a href="http://www.reactivemanifesto.org/"> <img style="border: 0; position: fixed; right: 0; top:0; z-index: 9000" src="@routes.Assets.at("images/we-are-reactive-blue-right.png")"> </a>
+
+</body>
+</html>

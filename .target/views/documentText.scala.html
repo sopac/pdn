@@ -1,0 +1,7 @@
+@(dt: DocumentText)(implicit lang: Lang)
+
+@main(dt.title.get) {
+   <article style="font-family:  verdana, sans-serif; font-size: 80%">
+   	@Html(dt.text.get.trim().replaceAll("\n", "<br/>").trim().replaceAll("<br/><br/>", "<br/>").replaceAll("<br/><br/>", "<br/>").trim().replaceAll("�"," "))
+   </article>
+}

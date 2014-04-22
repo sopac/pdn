@@ -1,0 +1,11 @@
+@(dl: List[LatestDocument])(implicit lang: Lang)
+
+@main("Documents List") {
+   @dl.map { d =>
+	<h3>@d.title</h3>
+	<p>@d.description</p>
+	<i>@(new java.text.SimpleDateFormat("dd MMMMM yyyy").format(d.uploaddate.get))</i>
+	
+	
+   }
+}

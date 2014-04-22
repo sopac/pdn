@@ -1,0 +1,145 @@
+@(alerts: List[Alert], focus: Wiki, recentCalendar: List[Calendar], upcomingCalendar: List[Calendar], latestDocuments: List[LatestDocument], news: List[Wiki], initiatives: List[Wiki])(implicit lang: Lang)
+
+@main(title="Welcome to Pacific Disaster Net", search = true) {
+	
+	
+	<div class="row narrow three-col">
+				<section class="info-box three-col-item first recent-alerts">
+					<h2>Recent alerts</h2>
+					<ol class="info-list separated">
+					
+					@alerts.map { a=>
+					    
+					    <li class="info-list-item separated">
+							<time datetime="@a.daterecieved" class="story-date">@(new java.text.SimpleDateFormat("dd MMMMM yyyy").format(a.daterecieved.get))</time>
+							<a href="@routes.Application.showAlert(a.id.get)">@a.subject</a>
+						</li>
+						
+						}
+					
+					</ol>
+					<a href="/alerts" class="button">More alerts</a>
+				</section>
+				<section class="info-box three-col-item disaster-focus">
+					<span class="category">In Focus</span>
+					<h2>@focus.titleen</h2>
+					<img src='@routes.Application.photo(id=focus.id.get, model="wiki")'/>
+					<p align="justify" style="font-family: verdana, sans-serif; font-size: 80%">					
+					@Html(focus.contenten.get.replaceAll("<p>", " ").replaceAll("</p>", "<br/>"))					
+					</p>
+				</section>
+				<section class="info-box three-col-item calendar">
+					<h2>Calendar</h2>
+					<h4 class="info-box-subheading">Recent</h4>
+					<ol class="info-list">
+					@recentCalendar.map { rc =>
+						<li class="info-list-item info-list-item-date">
+							<time datetime="@rc.startdate" class="block-date"><span class="day">@(new java.text.SimpleDateFormat("dd").format(rc.startdate.get))</span> <span class="month">@(new java.text.SimpleDateFormat("MMM").format(rc.startdate.get))</span></time>
+							<a href="index.html">@rc.title</a>
+						</li>
+					}
+						
+					</ol>
+					<h4 class="info-box-subheading alt">Upcoming</h4>
+					<ol class="info-list">
+					@upcomingCalendar.map { uc =>
+						<li class="info-list-item info-list-item-date">
+							<time datetime="@uc.startdate" class="block-date"><span class="day">@(new java.text.SimpleDateFormat("dd").format(uc.startdate.get))</span> <span class="month">@(new java.text.SimpleDateFormat("MMM").format(uc.startdate.get))</span></time>
+							<a href="index.html">@uc.title</a>
+						</li>
+						}
+					</ol>
+					<a href="index.html" class="info-list-more alt">View all events</a>
+				</section>
+	</div>
+	
+	
+	
+	
+	
+	<div class="row narrow three-col">
+				<section class="info-box three-col-item first sectioned">
+					<h2>Latest documents</h2>
+					<ol class="info-list">
+					
+					@latestDocuments.map {d =>
+						
+						<li class="info-list-item">
+							<span class="inline-date"><time datetime="@d.uploaddate">@(new java.text.SimpleDateFormat("dd MMMMM yyyy").format(d.uploaddate.get))</time></span>
+							<a href="@routes.Application.showDocument(d.id.get)">@d.title</a>
+						</li>
+						
+						}						
+						
+					</ol>
+				</section>
+				<section class="info-box three-col-item span-two sectioned">
+					<h2>News</h2>
+					<ol class="info-list">
+						
+												
+						<li class="info-list-item info-list-item-large-image news-item">
+							<img src='@routes.Application.photo(id=news.head.id.get, model="wiki")'/>
+							<div class="info-list-item-large-image-content">
+								<time datetime="@news.head.publishdate.get" class="news-story-date">@(new java.text.SimpleDateFormat("dd MMMMM yyyy").format(news.head.publishdate.get))</time>
+								<a href="@routes.Application.showWiki(news.head.id.get)"><b>@news.head.titleen</b></a>
+							</div>
+						</li>
+						
+						<!-- 
+						<li class="info-list-item info-list-item-small-image news-item">
+							<img src="images/news2.png" alt="News featured image one">
+							<time datetime="2013-07-19" class="news-story-date">16 July 2013</time>
+							<a href="index.html">The response of mangrove soil surface elevation to sea level rise</a>
+						</li>
+						 -->
+						
+						
+						@news.tail.map { n=>
+						
+						<li class="info-list-item news-item">
+							<time datetime="2013-07-19" class="news-story-date">16 July 2013</time>
+						    <a href="@routes.Application.showWiki(n.id.get)">@n.titleen</a>
+						</li>
+						
+						}
+						
+					</ol>
+					<a href="index.html" class="info-list-more alt">More news</a>
+				</section>
+			</div>
+
+   
+   
+   
+   
+   <div class="row narrow three-col sectioned">
+				<h3 class="upper-heading">Pacific Disaster Net Initiatives</h3>				
+				@initiatives.map { n =>				
+				<article class="info-box three-col-item info-box-image first">
+					<a href="@routes.Application.showWiki(n.id.get)">
+						<img src='@routes.Application.photo(id=n.id.get, model="wiki")'/>
+						<h4 class="info-box-image-title">@n.titleen</h4>
+					</a>
+				</article>				
+				}				
+	</div>
+			
+			
+			
+			
+			<div class="row alt">
+				<div class="row">
+					<h3>Latest activity</h3>
+					<ol class="info-list ">
+						<li class="info-list-item info-list-item-recent three-col-item first">
+							<span class="category">None</span>
+							<a href="index.html">None</a>
+						</li>
+						
+					</ol>
+				</div>
+			</div>
+			
+
+}
