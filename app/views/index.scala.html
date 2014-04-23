@@ -35,7 +35,7 @@
 					@recentCalendar.map { rc =>
 						<li class="info-list-item info-list-item-date">
 							<time datetime="@rc.startdate" class="block-date"><span class="day">@(new java.text.SimpleDateFormat("dd").format(rc.startdate.get))</span> <span class="month">@(new java.text.SimpleDateFormat("MMM").format(rc.startdate.get))</span></time>
-							<a href="index.html">@rc.title</a>
+							<a href="@(routes.Application.showCalendar(rc.id.get))">@rc.title</a>
 						</li>
 					}
 						
@@ -45,7 +45,7 @@
 					@upcomingCalendar.map { uc =>
 						<li class="info-list-item info-list-item-date">
 							<time datetime="@uc.startdate" class="block-date"><span class="day">@(new java.text.SimpleDateFormat("dd").format(uc.startdate.get))</span> <span class="month">@(new java.text.SimpleDateFormat("MMM").format(uc.startdate.get))</span></time>
-							<a href="index.html">@uc.title</a>
+							<a href="@(routes.Application.showCalendar(uc.id.get))">@uc.title</a>
 						</li>
 						}
 					</ol>
@@ -125,6 +125,11 @@
 				}				
 	</div>
 			
+			
+   <div class="row narrow three-col sectioned">
+				<h3 class="upper-heading">Featured Documents</h3>	
+   </div>
+				
 			
 			
 			

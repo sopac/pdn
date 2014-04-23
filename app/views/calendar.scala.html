@@ -1,0 +1,96 @@
+@(c: Calendar, links : List[CalendarLink], organisations: List[CalendarOrganisation])(implicit lang: Lang)
+@import java.util.Date
+
+@main("Calendar : " + c.title.get) {
+	
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+	
+	<div style="background: #f5f5f5; padding: 10px;">
+	
+	<img align="right" style="width:200px" src="@routes.Assets.at("icons/calendar.png")"/>
+	
+	<table>
+	<tr>
+		<td style="width: 200px"><b>Title<b/></td>
+		<td>@c.title.get</td>
+	</tr>
+	<tr>
+		<td style="width: 200px"><b>Year<b/></td>
+		<td>@c.calendaryear.get</td>
+	</tr>
+	<tr>
+		<td><b>Event Type<b/></td>
+		<td>@(Calendar.types(c.eventtype.get))</td>
+	</tr>
+	<tr>
+		<td><b>Venue<b/></td>
+		<td>@c.venue.get</td>
+	</tr>
+	<tr>
+		<td><b>Location<b/></td>
+		<td>@c.location.get</td>
+	</tr>
+	<tr>
+		<td><b>Country<b/></td>
+		<td>@c.country_name.getOrElse("")  (@c.country_iso.getOrElse(""))</td>
+	</tr>
+	<tr>
+		<td><b>Invitation Only<b/></td>
+		<td>
+		@{if (c.invitationonly.get) Html("<img style='height: 15px' src='" + routes.Assets.at("icons/yes.png") + "'/>")}
+		@{if (!c.invitationonly.get) Html("<img style='height: 15px' src='" + routes.Assets.at("icons/no.png") + "'/>")}
+		</td>
+	</tr>
+	<tr>
+		<td><b>Start Date/Time<b/></td>
+		<td>@c.startdate.get.toString().split(" ")(0)  @c.starttime.getOrElse("")</td>
+	</tr>
+	<tr>
+		<td><b>End Date/Time<b/></td>
+		<td>@c.enddate.get.toString().split(" ")(0)  @c.endtime.getOrElse("")</td>
+	</tr>
+	<tr>
+		<td><b>Organisations<b/></td>
+		<td>@{
+				organisations.map { o=>
+					Html(o.name.get + " (" + o.acronym.get + ")<br/>")					
+				}	
+			}
+		</td>
+	</tr>
+	<tr>
+		<td><b>Links<b/></td>
+		<td>@{
+				links.map { l =>
+					Html("<a href='" + l.link + "'>" + l.description + "</a><br/>")					
+				}	
+			}
+		</td>
+	</tr>
+	
+	
+	</table>
+	</div>
+	<br/>
+	
+	<p><b>Comments</b></p>
+	<p>@c.comments.getOrElse("None")</p>
+	
+	<p><b>Contacts</b></p>
+	<p>@c.contacts.getOrElse("")
+	@{ 
+		if(c.contacts.isEmpty) "None" 	  
+	}
+	</p>
+	
+	<div align="right">
+	<a class="button"><b>&#9755; iCal</b></a>
+	<a href='mailto:pdn&#64;spc.int?subject= - Pacific Disaster Net - @c.title.get&body=@c.title.get%0D%0A%0D%0A@Application.STATIC_URL.replace("static/", "calendar/")@c.id.get' class="button" style="background-color: lightblue; color: black">&#64; Email</a>
+	</div>
+	
+	
+	</article>
+	
+	
+  
+}

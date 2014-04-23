@@ -1,0 +1,92 @@
+@(ml: List[Media], page: Int, total: Int, sort: String, sortType: String, filterString: String, filterType: List[String])(implicit lang: Lang)
+@import java.util.Date
+
+@main("Multimedia") {
+	
+	@if(!filterString.equals("")){
+		<h3>Displaying <i><u>@filterString.split(":")(1)</u></i> Multimedia</h3>
+	}
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+		
+
+	<div style="background-color: lightblue; text-align: center; font-weight: normal; padding: 5px">
+
+	<a href="#" onclick="$('#filterType').toggle();$('#filterYear').hide();$('#filterCountry').hide();">Filter By Type</a>
+	|
+	<a href="/medias?page=@page&sort=title&sortType=asc&filter=@filterString">Sort By Title</a>
+	|
+	<a href="/medias?page=@page&sortType=desc&filter=@filterString">Sort By Latest</a>
+	| 
+	<a href="/medias?page=@page&sortType=asc&filter=@filterString">Sort By Oldest</a>
+	
+	</div>
+	
+	
+	
+
+	<div id="filterType" style="display: none">
+	<br/>
+	<select id="selectType" placeHolder="Select Type..." onchange="window.location='/medias?page=@page&total=@total&sort=@sort&sortType=@sortType&filter=mediatype:' + $(this).val()">
+	<option disabled selected value="">Select Type...</option>
+	@filterType.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectType').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+	
+	
+
+
+	<br/>
+	@ml.map { m =>
+		<a href="@routes.Application.showMedia(m.id.get)">
+		<img onerror="this.src='@routes.Assets.at("images/pdn.png")';" align="left"  style="padding-right: 5px;  width: 180px !important; margin-right: 5px;" src='@routes.Application.photo(id=m.id.get, model="media")'/>
+		</a>
+		<h3 style="font-size: 15px !important; margin-top: 2px;"><a href="@routes.Application.showMedia(m.id.get)">@m.title.get</a></h3>
+		<p align="justify" style="height: 100px">@m.description.getOrElse("No Description")
+		| <i><b>Source : </b>@m.source | <b>Copyright : </b> @m.copyright</i>
+		</p>
+	
+		
+		
+		<br/><br/>
+		
+		
+	
+	
+	}
+	
+	<br/><br/>	
+	<div style="background-color: lightblue; font-weight: bold; text-align: center; padding: 5px">
+	Page: @(page + 1) | Displayed: @ml.size | Total: @total 
+	</div>
+	</article>
+	
+	<br/>
+	
+	
+	
+	
+	<div align="center" id="pager"></div>
+	<script type="text/javascript">
+		$("#pager").wPaginate({
+    	theme: 'blue',
+    	total: @total,
+    	//index: 40,
+    	limit: 10,
+    	url: function(i){ return '/medias?page=' + i + '&total=@total&sort=@sort&sortType=@sortType&filter=@filterString'; } 
+		});
+ 	</script>
+ 	
+ 	
+ }
+ 	
+ 	
+ 	
+	  
+

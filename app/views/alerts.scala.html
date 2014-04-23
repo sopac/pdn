@@ -71,12 +71,13 @@
 	</div>
 	
 	@alerts.map { a =>
-		
+		<img align="left"  style="padding-right: 5px;  height: 40px;  margin-right: 5px;"  src='@routes.Assets.at("icons/alert.png")'/>
 		<h3><a href="@routes.Application.showAlert(a.id.get)">@a.subject</a></h3>
+		<div style="width: 180% !important; margin-left: 50px; margin-top: -10px">
 		Recieved : @a.daterecieved | Source : @a.source_name | @a.id
-		<br/>
+		|
 		Countries : @a.countries.get.toString().replaceAll(";", " | ")
-	
+		</div>
 	
 	}
 	

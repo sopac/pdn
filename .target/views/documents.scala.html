@@ -16,9 +16,11 @@
 	*@
 	<a href="#" onclick="$('#filterPublished').toggle();$('#filterUpload').hide();$('#filterMaterial').hide();$('#filterLanguage').hide();">Filter By Publication Year</a>
 	|
-	<a href="#" onclick="$('#filterMaterial').toggle();$('#filterUpload').hide();$('#filterPublished').hide();$('#filterLanguage').hide();">Filter By Material Type</a>
+	<a href="#" onclick="$('#filterMaterial').toggle();$('#filterUpload').hide();$('#filterPublished').hide();$('#filterLanguage').hide();">Filter By Type</a>
 	|
 	<a href="#" onclick="$('#filterLanguage').toggle();$('#filterUpload').hide();$('#filterPublished').hide();$('#filterMaterial').hide();">Filter By Language</a>
+	| 
+	<a href="/documents?page=@page&sort=title&sortType=asc&filter=@filterString">Sort By Title</a>
 	|
 	<a href="/documents?page=@page&sortType=desc&filter=@filterString">Sort By Latest</a>
 	| 

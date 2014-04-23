@@ -58,7 +58,6 @@ object Alert {
       resList = resList.distinct
       //sort
       resList = resList.sorted
-
       return resList.toList
   }
 

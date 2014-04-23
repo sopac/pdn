@@ -11,6 +11,8 @@ GET     /download/:file				controllers.Application.download(file: String)
 #Show
 GET     /wiki/:id					controllers.Application.showWiki(id: Int)
 GET     /alert/:id					controllers.Application.showAlert(id: Int)
+GET     /calendar/:id				controllers.Application.showCalendar(id: Int)
+GET     /media/:id				controllers.Application.showMedia(id: Int)
 GET     /document/:id				controllers.Application.showDocument(id: Int)
 GET     /documentText/:id			controllers.Application.showDocumentText(id: Int)
 GET     /documentHtml/:id			controllers.Application.showDocumentHtml(id: Int)
@@ -19,8 +21,9 @@ GET     /documentView/:id			controllers.Application.showDocumentViewer(id: Int)
 
 #List
 GET     /alerts						controllers.Application.listAlert(page: Int ?= 0, num: Int ?= 10, sort: String ?= "alert.daterecieved", sortType: String ?= "desc", filter: String ?= "")
+GET     /calendars					controllers.Application.listCalendar(page: Int ?= 0, num: Int ?= 10, sort: String ?= "startdate", sortType: String ?= "desc", filter: String ?= "")
 GET     /documents					controllers.Application.listDocument(page: Int ?= 0, num: Int ?= 10, sort: String ?= "id", sortType: String ?= "desc", filter: String ?= "")
-
+GET     /medias					    controllers.Application.listMedia(page: Int ?= 0, num: Int ?= 10, sort: String ?= "id", sortType: String ?= "desc", filter: String ?= "")
 
 
 # Map static resources from the /public folder to the /assets URL path

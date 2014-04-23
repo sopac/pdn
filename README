@@ -21,3 +21,7 @@ Applied GeoScience and Technology Division, Secretariat of the Pacific Community
 Sachindra Singh | Systems Developer
 sachindras@spc.int
 ------------------------------------------------
+
+Note:
+pg_dump -Fc -b pdn_db > /tmp/pdn_db.bk
+pg_restore -d pdn_db pdn_db.bk

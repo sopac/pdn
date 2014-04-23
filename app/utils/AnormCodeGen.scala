@@ -17,7 +17,11 @@ object AnormCodeGen extends App {
     //val sql = "SELECT document.id, documentauthor.* FROM public.documentauthor AS documentauthor RIGHT OUTER JOIN public.document AS document ON documentauthor.document_id = document.id order by document.id"
     //val sql = "SELECT document.id, documentmaterialtypes.type FROM public.document AS document, public.documentmaterialtypes AS documentmaterialtypes WHERE document.materialtype_id = documentmaterialtypes.id Order By document.id"
     //val sql = "SELECT document.id, users.name, users.email, users.organisation, users.designation, users.photo FROM public.document AS document, public.users AS users WHERE document.user_id = users.id order by users.id"
-    val sql = "SELECT document.id, documenttext.text FROM public.document AS document, public.documenttext AS documenttext WHERE document.id = documenttext.documentid order by document.id"
+    //val sql = "SELECT document.id, documenttext.text FROM public.document AS document, public.documenttext AS documenttext WHERE document.id = documenttext.documentid order by document.id"
+    //val sql = "SELECT calendar.id, calendarlink.description, calendarlink.link FROM public.calendarlink AS calendarlink RIGHT OUTER JOIN public.calendar AS calendar ON calendarlink.calendar_id = calendar.id order by calendar.id"
+    //val sql = "SELECT calendar.id, organisations.name, organisations.acronym, organisations.id as organisation_id FROM public.organisations_calendar AS organisations_calendar RIGHT OUTER JOIN public.calendar AS calendar ON organisations_calendar.calendars_id = calendar.id, public.organisations AS organisations WHERE organisations_calendar.organisation_id = organisations.id order by calendar.id"
+    //val sql = "select * from media order by id"
+    val sql = "SELECT contact.*, organisations.id AS organisation_id, organisations.name, organisations.acronym, organisations.logo, country.name AS country_name, country.iso AS country_iso FROM public.contact AS contact LEFT OUTER JOIN public.organisations AS organisations ON contact.organisation_id = organisations.id LEFT OUTER JOIN public.country AS country ON contact.country_id = country.id order by contact.id"
 
     Class.forName("org.postgresql.Driver")
     val conn = DriverManager.getConnection("jdbc:postgresql://localhost/pdn_db", "postgres", "erlang44")

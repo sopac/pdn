@@ -14,6 +14,7 @@ object Application extends Controller {
   def photo(id: Int, model: String) = Action {
     var bytes: Array[Byte] = null
     if (model == "wiki") bytes = Wiki.showWiki(id).image.get
+    if (model == "media") bytes = Media.showMedia(id).thumbnail.get
     if (model == "document") bytes = DocumentThumbnail.getThumbnail(id).thumbnail.get
     Ok(bytes).as("image/jpg")
   }
@@ -27,7 +28,7 @@ object Application extends Controller {
   }
 
   def index = Action {
-    Ok(views.html.index(Alert.recentAlerts(4), Wiki.showFocus, Calendar.recentCalendar(2), Calendar.upcomingCalendar(3), LatestDocument.latestDocuments(4), Wiki.listNews(5), Wiki.listInitiatives))
+    Ok(views.html.index(Alert.recentAlerts(4), Wiki.showFocus, Calendar.recentCalendar(2), Calendar.upcomingCalendar(3), LatestDocument.latestDocuments(3), Wiki.listNews(5), Wiki.listInitiatives))
   }
 
   def showWiki(id: Int) = Action {
@@ -40,14 +41,36 @@ object Application extends Controller {
     Ok(views.html.alerts(list, page, total, filter, Alert.getFilterList("alertsource.name"), Alert.getFilterList("alert.daterecieved"), Alert.getFilterList("alert.countries")))
   }
 
+  def listCalendar(page: Int, num: Int, sort: String, sortType: String, filter: String) = Action {
+    val list = Calendar.listCalendar(page, num, sort, sortType, filter)
+    val total = Calendar.totalCalendars
+    Ok(views.html.calendars(list, page, total, sort, sortType, filter, Calendar.getFilterList("eventtype"), Calendar.getFilterList("calendaryear"), Calendar.getFilterList("country.name")))
+
+  }
+
   def listDocument(page: Int, num: Int, sort: String, sortType: String, filter: String) = Action {
     val list = Document.listDocuments(page, num, sort, sortType, filter)
     val total = Document.totalDocuments
     Ok(views.html.documents(list, page, total, sort, sortType, filter, Document.getFilterList("publicationyear"), Document.getFilterList("materialtype"), Document.getFilterList("language")))
   }
 
+  def listMedia(page: Int, num: Int, sort: String, sortType: String, filter: String) = Action {
+    val list = Media.listMedia(page, num, sort, sortType, filter)
+    val total = Media.totalMedia
+    val filterType = Media.mediaType
+    Ok(views.html.medias(list, page, total, sort, sortType, filter, filterType))
+  }
+
   def showAlert(id: Int) = Action {
     Ok(views.html.alert(Alert.showAlert(id)))
+  }
+
+  def showMedia(id: Int) = Action {
+    Ok(views.html.media(Media.showMedia(id)))
+  }
+
+  def showCalendar(id: Int) = Action {
+    Ok(views.html.calendar(Calendar.showCalendar(id), CalendarLink.getCalendarLinks(id), CalendarOrganisation.getCalendarOrganisations(id)))
   }
 
   def showDocument(id: Int) = Action {

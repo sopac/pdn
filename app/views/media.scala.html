@@ -1,0 +1,60 @@
+@(m: Media)(implicit lang: Lang)
+@import java.util.Date
+
+@main("Media : " + m.title.get) {
+	
+	<div align="center">
+		<video width="320px" src="@(Application.STATIC_URL)/media/@(m.id).mp4" controls autoplay>
+		Your browser does not support HTML 5 videos. Please use <a href="https://www.google.com/intl/en/chrome/browser/">Google Chrome</a> or <a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a>
+		</video>
+	</div>
+	<br/>
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+	
+	<div style="background: #f5f5f5; padding: 10px;">
+	
+	<img align="right" style="width:120px" src="@routes.Assets.at("icons/media.png")"/>
+	
+	<table>
+	<tr>
+		<td><b>Title<b/></td>
+		<td><u>@m.title.get</u></td>
+	</tr>
+	<tr>
+		<td><b>Description<b/></td>
+		<td style="text-align: justify;">@m.description.get</td>
+	</tr>
+	<tr>
+		<td><b>Source<b/></td>
+		<td>@m.source.get</td>
+	</tr>
+	<tr>
+		<td><b>Copyright<b/></td>
+		<td><i>@m.copyright.get</i></td>
+	</tr>
+	<tr>
+		<td style="width: 200px"><b>Type<b/></td>
+		<td>@{
+			m.mediatype.get match {
+				case 0 => "Video"
+				case 1 => "Photo"
+				case 2 => "Audio"
+				case 3 => "Presentation"	
+			}
+			}
+	</td>
+	</tr>
+	</table>
+	</div>
+	<br/>
+	
+	<div align="right">
+	<a href="@(Application.STATIC_URL)/media/@(m.id).mp4" class="button"><b>&#9755; Download</b></a>
+	<a href='mailto:pdn&#64;spc.int?subject= Media - Pacific Disaster Net - @m.title.get&body=@m.title.get%0D%0A%0D%0A@m.description.get%0D%0A%0D%0A%0D%0A%0D%0A@Application.STATIC_URL.replace("static/", "media/")@m.id.get' class="button" style="background-color: lightgreen; color: black">&#64; Email</a>
+	</div>
+	
+	</article>
+	
+	
+  
+}

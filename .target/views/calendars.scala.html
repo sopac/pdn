@@ -1,0 +1,130 @@
+@(cl: List[Calendar], page: Int, total: Int, sort: String, sortType: String, filterString: String, filterType: List[String], filterYear: List[String], filterCountry: List[String])(implicit lang: Lang)
+@import java.util.Date
+
+@main("Calendar") {
+	
+	@if(!filterString.equals("")){
+		<h3>Displaying <i><u>@filterString.split(":")(1)</u></i> Calendar Events</h3>
+	}
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+		
+
+	<div style="background-color: lightblue; text-align: center; font-weight: normal; padding: 5px">
+	@*
+	<a href="#" onclick="$('#filterUpload').toggle();$('#filterPublished').hide();$('#filterMaterial').hide();$('#filterLanguage').hide();">Filter By Upload Year</a>
+	|
+	*@
+	<a href="#" onclick="$('#filterType').toggle();$('#filterYear').hide();$('#filterCountry').hide();">Filter By Type</a>
+	|
+	<a href="#" onclick="$('#filterYear').toggle();$('#filterType').hide();$('#filterCountry').hide();">Filter By Year</a>
+	|
+	<a href="#" onclick="$('#filterCountry').toggle();$('#filterType').hide();$('#filterYear').hide();">Filter By Country</a>
+	| 
+	<a href="/calendars?page=@page&sort=title&sortType=asc&filter=@filterString">Sort By Title</a>
+	|
+	<a href="/calendars?page=@page&sortType=desc&filter=@filterString">Sort By Latest</a>
+	| 
+	<a href="/calendars?page=@page&sortType=asc&filter=@filterString">Sort By Oldest</a>
+	
+	</div>
+	
+	
+	
+
+	<div id="filterType" style="display: none">
+	<br/>
+	<select id="selectType" placeHolder="Select Type..." onchange="window.location='/calendars?page=@page&total=@total&sort=@sort&sortType=@sortType&filter=eventtype:' + $(this).val()">
+	<option disabled selected value="">Select Type...</option>
+	@filterType.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectType').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+	
+	<div id="filterYear" style="display: none">
+	<br/>
+	<select id="selectYear" placeHolder="Select Year..." onchange="window.location='/calendars?page=@page&total=@total&sort=@sort&sortType=@sortType&filter=calendaryear:' + $(this).val()">
+	<option disabled selected value="">Select Year...</option>
+	@filterYear.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectYear').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+	
+	<div id="filterCountry" style="display: none">
+	<br/>
+	<select id="selectCountry" placeHolder="Select Country..." onchange="window.location='/calendars?page=@page&total=@total&sort=@sort&sortType=@sortType&filter=country.name:' + $(this).val()">
+	<option disabled selected value="">Select Country...</option>
+	@filterCountry.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectCountry').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+
+
+	<br/>
+	@cl.map { c =>
+		<a href="@routes.Application.showDocument(c.id.get)">
+		<img align="left"  style="padding-right: 5px;  height: 60px;  margin-right: 5px;"  src='@routes.Assets.at("icons/calendar.png")'/>
+		</a>
+		<h3 style="font-size: 15px !important; margin-top: 2px;"><a href="@routes.Application.showCalendar(c.id.get)">@c.title.get</a></h3>
+		
+		<div style="width: 120% !important; margin-top: -10px">
+		<b>Start Date : </b>@c.startdate.get.toString().split(" ")(0)  @c.starttime.getOrElse("") |
+		<b>End Date : </b>@c.enddate.get.toString().split(" ")(0)  @c.endtime.getOrElse("") |
+		<b>Venue : </b>@c.venue.getOrElse("") |
+		<b>Country : </b>@c.country_name.getOrElse("N/A")  
+		</div>
+		
+		
+		<br/><br/>
+		
+		
+	
+	
+	}
+	
+	<br/><br/>	
+	<div style="background-color: lightblue; font-weight: bold; text-align: center; padding: 5px">
+	Page: @(page + 1) | Displayed: @cl.size | Total: @total 
+	</div>
+	</article>
+	
+	<br/>
+	
+	
+	
+	
+	<div align="center" id="pager"></div>
+	<script type="text/javascript">
+		$("#pager").wPaginate({
+    	theme: 'blue',
+    	total: @total,
+    	//index: 40,
+    	limit: 10,
+    	url: function(i){ return '/calendars?page=' + i + '&total=@total&sort=@sort&sortType=@sortType&filter=@filterString'; } 
+		});
+ 	</script>
+ 	
+ 	
+ }
+ 	
+ 	
+ 	
+	  
+
