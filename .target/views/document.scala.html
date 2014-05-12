@@ -1,4 +1,4 @@
-@(d: Document, misc: DocumentMisc, authors: List[DocumentAuthors], materialType: DocumentMaterialType, cataloguer: DocumentUser)(implicit lang: Lang)
+@(d: Document, misc: DocumentMisc, authors: List[DocumentAuthors], materialType: DocumentMaterialType, cataloguer: DocumentUser, topics: List[String], countries: List[String], organisations: List[String], meetings: List[String])(implicit lang: Lang)
 @import java.util.Date
 
 @main("" + d.title.get) {
@@ -101,19 +101,39 @@
 	<table style="width: 100%; background-color: lightgray; padding: 5px" cellpadding="4px">
 		<tr>
 			<td style="width: 200px"><b>Related Topics</b></td>
-			<td>None</td>
+			<td>
+			@if(topics.isEmpty) { None }
+			@topics.map { t=>
+				@t ;	
+			}
+			</td>
 		</tr>
 		<tr>
 			<td><b>Related Countries</b></td>
-			<td>None</td>
+			<td>
+			@if(countries.isEmpty) { None }
+			@countries.map { c=>
+				@c ; 	
+			}
+			</td>
 		</tr>
 		<tr>
 			<td><b>Related Organisations</b></td>
-			<td>None</td>
+			<td>
+			@if(organisations.isEmpty) { None }
+			@organisations.map { o=>
+				@o ;	
+			}
+			</td>
 		</tr>
 		<tr>
 			<td><b>Related Meetings</b></td>
-			<td>None</td>
+			<td>
+			@if(meetings.isEmpty) { None }
+			@meetings.map { m=>
+				@m ;	
+			}
+			</td>
 		</tr>
 	</table>
 	

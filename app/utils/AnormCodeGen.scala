@@ -23,7 +23,8 @@ object AnormCodeGen extends App {
     //val sql = "select * from media order by id"
     //val sql = "SELECT contact.*, organisations.id AS organisation_id, organisations.name, organisations.acronym, organisations.logo, country.name AS country_name, country.iso AS country_iso FROM public.contact AS contact LEFT OUTER JOIN public.organisations AS organisations ON contact.organisation_id = organisations.id LEFT OUTER JOIN public.country AS country ON contact.country_id = country.id order by contact.id"
     //val sql = "SELECT organisations.id AS organisation_id, organisations.name, organisations.acronym, organisations.logo, country.name AS country_name, country.iso AS country_iso, contact.firstname, contact.lastname, contact.designation, contact.department, contact.photo, contact.contacttype, contact.gender, contact.languages FROM public.contact AS contact LEFT OUTER JOIN public.organisations AS organisations ON contact.organisation_id = organisations.id LEFT OUTER JOIN public.country AS country ON contact.country_id = country.id"
-    val sql = "SELECT id, city, email1, email2, fax, physicaladdress, postcode, postaladdress, satellitephone, satellitephonesystem, tags, telephone1, telephone2, url1, url2, voiceoverip FROM public.contact AS contact"
+    //val sql = "SELECT id, city, email1, email2, fax, physicaladdress, postcode, postaladdress, satellitephone, satellitephonesystem, tags, telephone1, telephone2, url1, url2, voiceoverip FROM public.contact AS contact"
+    val sql = "select * from documentrelationitem where document_id=98708 order by treeorder"
 
     Class.forName("org.postgresql.Driver")
     val conn = DriverManager.getConnection("jdbc:postgresql://localhost/pdn_db", "postgres", "erlang44")

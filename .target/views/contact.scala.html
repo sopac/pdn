@@ -110,14 +110,14 @@
 	@if(!cd.satellitephonesystem.isEmpty) {
 	<tr>
 		<td><b>Satellite Phone System<b/></td>
-		<td>@cd.satellitephonesystem.get match {
+		<td>@(cd.satellitephonesystem.get match {
 			case 0 => "AceS" 
 			case 1 => "Inmarasat" 
 			case 2 => "Thruraya" 
 			case 3 => "MSAT" 
 			case 4 => "GlobalStar" 
 			case 5 =>" Iridium"
-		}	
+		})	
 		</td>
 	</tr>
 	}
