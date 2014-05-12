@@ -18,7 +18,7 @@
 						}
 					
 					</ol>
-					<a href="@routes.Application.alerts" class="button">More alerts</a>
+					<a href="/alerts" class="button">More alerts</a>
 				</section>
 				<section class="info-box three-col-item disaster-focus">
 					<span class="category">In Focus</span>
@@ -35,7 +35,7 @@
 					@recentCalendar.map { rc =>
 						<li class="info-list-item info-list-item-date">
 							<time datetime="@rc.startdate" class="block-date"><span class="day">@(new java.text.SimpleDateFormat("dd").format(rc.startdate.get))</span> <span class="month">@(new java.text.SimpleDateFormat("MMM").format(rc.startdate.get))</span></time>
-							<a href="index.html">@rc.title</a>
+							<a href="@(routes.Application.showCalendar(rc.id.get))">@rc.title</a>
 						</li>
 					}
 						
@@ -45,7 +45,7 @@
 					@upcomingCalendar.map { uc =>
 						<li class="info-list-item info-list-item-date">
 							<time datetime="@uc.startdate" class="block-date"><span class="day">@(new java.text.SimpleDateFormat("dd").format(uc.startdate.get))</span> <span class="month">@(new java.text.SimpleDateFormat("MMM").format(uc.startdate.get))</span></time>
-							<a href="index.html">@uc.title</a>
+							<a href="@(routes.Application.showCalendar(uc.id.get))">@uc.title</a>
 						</li>
 						}
 					</ol>
@@ -66,7 +66,7 @@
 						
 						<li class="info-list-item">
 							<span class="inline-date"><time datetime="@d.uploaddate">@(new java.text.SimpleDateFormat("dd MMMMM yyyy").format(d.uploaddate.get))</time></span>
-							<a href="index.html">@d.title</a>
+							<a href="@routes.Application.showDocument(d.id.get)">@d.title</a>
 						</li>
 						
 						}						
@@ -109,10 +109,7 @@
 				</section>
 			</div>
 
-   
-   
-   
-   
+           
    <div class="row narrow three-col sectioned">
 				<h3 class="upper-heading">Pacific Disaster Net Initiatives</h3>				
 				@initiatives.map { n =>				
@@ -126,6 +123,10 @@
 	</div>
 			
 			
+   <div class="row narrow three-col sectioned">
+				<h3 class="upper-heading">Featured Documents</h3>	
+   </div>
+						
 			
 			
 			<div class="row alt">

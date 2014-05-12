@@ -48,6 +48,12 @@ object Application extends Controller {
 
   }
 
+  def listContact(page: Int, num: Int, sort: String, sortType: String, filter: String) = Action {
+    val list = Contact.listContact(page, num, sort, sortType, filter)
+    val total = Contact.totalContacts
+    Ok(views.html.contacts(list, page, total, filter, Contact.getFilterList("organisations.name"), Contact.getFilterList("country.name"), Contact.getFilterList("contact.contacttype"))) // Alert.getFilterList("alertsource.name"), Alert.getFilterList("alert.daterecieved"), Alert.getFilterList("alert.countries")))
+  }
+
   def listDocument(page: Int, num: Int, sort: String, sortType: String, filter: String) = Action {
     val list = Document.listDocuments(page, num, sort, sortType, filter)
     val total = Document.totalDocuments
@@ -63,6 +69,10 @@ object Application extends Controller {
 
   def showAlert(id: Int) = Action {
     Ok(views.html.alert(Alert.showAlert(id)))
+  }
+
+  def showContact(id: Int) = Action {
+    Ok(views.html.contact(Contact.showContact(id), ContactDetail.showContact(id)))
   }
 
   def showMedia(id: Int) = Action {

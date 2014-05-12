@@ -82,7 +82,7 @@
 		<a href="@routes.Application.showDocument(c.id.get)">
 		<img align="left"  style="padding-right: 5px;  height: 60px;  margin-right: 5px;"  src='@routes.Assets.at("icons/calendar.png")'/>
 		</a>
-		<h3 style="font-size: 15px !important; margin-top: 2px;"><a href="@routes.Application.showCalendar(c.id.get)">@c.title.get</a></h3>
+		<h3 style="margin-top: 2px;"><a href="@routes.Application.showCalendar(c.id.get)">@c.title.get</a></h3>
 		
 		<div style="width: 120% !important; margin-top: -10px">
 		<b>Start Date : </b>@c.startdate.get.toString().split(" ")(0)  @c.starttime.getOrElse("") |

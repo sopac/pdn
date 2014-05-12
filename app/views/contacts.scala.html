@@ -1,0 +1,141 @@
+@(contacts: List[Contact], page: Int, total: Int, filterString: String, filterOrg: List[String], filterCountry: List[String], filterType: List[String])(implicit lang: Lang)
+@import java.util.Date
+
+@main("Contacts") {
+	
+	@if(!filterString.equals("")){
+		<h3>Displaying <i><u>@filterString.split(":")(1)</u></i> Contacts</h3>
+	}
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+		
+	<div style="background-color: lightblue; text-align: center; font-weight: normal; padding: 5px">
+	<a href="#" onclick="$('#filterOrg').toggle();$('#filterCountry').hide();$('#filterType').hide();">Filter By Organisation</a>
+	|
+	<a href="#" onclick="$('#filterCountry').toggle();$('#filterOrg').hide();$('#filterType').hide()">Filter By Country</a>
+	|
+	<a href="#" onclick="$('#filterType').toggle();$('#filterOrg').hide();$('#filterCountry').hide()">Filter By Contact Type</a>
+	|
+	
+	<a href="/contacts?page=@page&sort=id&sortType=desc">Sort By Latest</a>
+	| 
+	<a href="/contacts?page=@page&sort=id&sortType=asc">Sort By Oldest</a>
+	|
+	
+	<b>Search</b>	
+	</div>
+	
+	
+	
+	<div id="filterOrg" style="display: none">
+	<br/>
+	<select id="selectOrg" placeHolder="Select Organisation..." onchange="window.location='/contacts?filter=organisations.name:' + $(this).val()">
+	<option disabled selected value="">Select Organisation...</option>
+	@filterOrg.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectOrg').selectize();
+	</script>
+	</div>	
+	
+	
+	<div id="filterCountry" style="display: none">
+	<br/>
+	<select id="selectCountry" placeHolder="Select Country..." onchange="window.location='/contacts?filter=country.name:' + $(this).val()">
+	<option disabled selected value="">Select Country...</option>
+	@filterCountry.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectCountry').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+	
+	<div id="filterType" style="display: none">
+	<br/>
+	<select id="selectType" placeHolder="Select Contact Type..." onchange="window.location='/contacts?filter=contact.contacttype:' + $(this).val()">
+	<option disabled selected value="">Select Contact Type...</option>
+	@filterType.map { f =>
+		<option value="@f">@f</option>
+	}	
+	</select>		
+	<script type="text/javascript">
+	$('#selectType').selectize({	    
+	    sortField: 'text'
+	});
+	</script>
+	</div>
+	
+	
+	@contacts.map { c =>
+		<img align="left"  style="padding-right: 5px;  height: 60px;  margin-right: 5px;"  src='@routes.Assets.at("icons/contact.png")'/>
+		<h3><a href="@routes.Application.showContact(c.id.get)">@c.firstname @c.lastname</a></h3>
+		<div style="width: 190% !important; margin-left: 50px; margin-top: -10px">
+		@if(!c.designation.getOrElse("").trim().equals("")) {
+			<b>Designation</b> : @c.designation.get |	
+		} 
+		
+		@if(!c.department.getOrElse("").trim().equals("")) {
+			<b>Department</b> : @c.department.get |
+		}
+		
+		@if(!c.name.getOrElse("").trim().equals("")) {
+			<b>Organisation</b> : @c.name.get 
+		} 
+		<br/>
+		@if(!c.country_name.getOrElse("").trim().equals("")) {
+			<b>Country</b> : @c.country_name.get |
+		} 
+		@if(!c.languages.getOrElse("").trim().equals("")) {
+			<b>Languages</b> : @c.languages.get.toUpperCase() |
+		} 
+		<b>Contact Type</b> : 
+		@(c.contacttype.get match {
+			case 0 => "ACADEMIC" 
+			case 1 => "CONSULTANT" 
+			case 2 => "CROP AGENCY" 
+			case 3 => "DONOR" 
+			case 4 => "GOVERNMENT" 
+			case 5 => "NGO" 
+			case 6 => "REDCROSS" 
+			case 7 => "UNITED NATION" 
+			case 8 => "STUDENT"	
+		})		
+		  
+		</div>
+	
+	}
+	
+	<br/><br/>	
+	<div style="background-color: lightblue; font-weight: bold; text-align: center; padding: 5px">
+	Page: @(page + 1) | Displayed: @contacts.size | Total: @total 
+	</div>
+	</article>
+	
+	<br/>
+	
+	
+	@if(filterString.equals("")){
+	
+	<div align="center" id="pager"></div>
+	<script type="text/javascript">
+		$("#pager").wPaginate({
+    	theme: 'blue',
+    	total: @total,
+    	//index: 40,
+    	limit: 20,
+    	url: function(i){ return '/contacts?page=' + i + ''; } 
+		});
+ 	</script>
+ 	}
+ 	
+ }
+ 	
+ 	
+ 	
+	  
+

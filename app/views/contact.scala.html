@@ -1,0 +1,168 @@
+@(c: Contact, cd: ContactDetail)(implicit lang: Lang)
+@import java.util.Date
+
+@main("Contact : " + c.firstname.get + " " + c.lastname.get) {
+	
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+	
+	<div style="background: #f5f5f5; padding: 10px;">
+	
+	<img align="right" style="width:200px" src="@routes.Assets.at("icons/contact.png")"/>
+	
+	<table>
+	<tr>
+		<td style="width: 200px"><b>Organisation<b/></td>
+		<td>@c.name.getOrElse("None")</td>
+	</tr>
+	<tr>
+		<td><b>Designation<b/></td>
+		<td>@c.designation.getOrElse("None")</td>
+	</tr>
+	@if(!c.department.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>Department<b/></td>
+		<td>@c.department.getOrElse("None")</td>
+	</tr>
+	}
+	<tr>
+		<td><b>City<b/></td>
+		<td>@cd.city.getOrElse("None")</td>
+	</tr>
+	<tr>
+		<td><b>Country<b/></td>
+		<td>@c.country_name.getOrElse("None")</td>
+	</tr>
+	<tr>
+		<td><b>Gender<b/></td>
+		<td>@(c.gender.get match {
+			case 0 => "Male"
+			case 1 => "Female"	
+			})
+		</td>
+	</tr>
+	<tr>
+		<td><b>Type<b/></td>
+		<td>@(c.contacttype.get match {
+			case 0 => "ACADEMIC" 
+			case 1 => "CONSULTANT" 
+			case 2 => "CROP AGENCY" 
+			case 3 => "DONOR" 
+			case 4 => "GOVERNMENT" 
+			case 5 => "NGO" 
+			case 6 => "REDCROSS" 
+			case 7 => "UNITED NATION" 
+			case 8 => "STUDENT"	
+		})		
+		</td>
+	</tr>
+	@if(!c.languages.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>Languages<b/></td>
+		<td>@c.languages.getOrElse("None")</td>
+	</tr>
+	}
+	<tr>
+		<td><b>Email 1<b/></td>
+		<td>@cd.email1.getOrElse("None")</td>
+	</tr>
+	@if(!cd.email2.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>Email 2<b/></td>
+		<td>@cd.email2.getOrElse("None")</td>
+	</tr>
+	}
+	<tr>
+		<td><b>Telephone 1<b/></td>
+		<td>@cd.telephone1.getOrElse("None")</td>
+	</tr>
+	@if(!cd.telephone2.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>Telephone 2<b/></td>
+		<td>@cd.telephone2.getOrElse("None")</td>
+	</tr>
+	}
+	<tr>
+		<td><b>Fax<b/></td>
+		<td>@cd.fax.getOrElse("None")</td>
+	</tr>
+	<tr>
+		<td><b>Physical Address<b/></td>
+		<td>@cd.physicaladdress.getOrElse("None")</td>
+	</tr>
+	@if(!cd.postaladdress.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>Postal Address<b/></td>
+		<td>@cd.postaladdress.getOrElse("None")</td>
+	</tr>
+	}
+	@if(!cd.postcode.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>Postal Code<b/></td>
+		<td>@cd.postcode.getOrElse("None")</td>
+	</tr>
+	}
+	@if(!cd.satellitephone.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>Satellite Phone<b/></td>
+		<td>@cd.satellitephone.getOrElse("None")</td>
+	</tr>
+	}
+	@if(!cd.satellitephonesystem.isEmpty) {
+	<tr>
+		<td><b>Satellite Phone System<b/></td>
+		<td>@(cd.satellitephonesystem.get match {
+			case 0 => "AceS" 
+			case 1 => "Inmarasat" 
+			case 2 => "Thruraya" 
+			case 3 => "MSAT" 
+			case 4 => "GlobalStar" 
+			case 5 =>" Iridium"
+		})	
+		</td>
+	</tr>
+	}
+	@if(!cd.voiceoverip.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>Voice Over IP<b/></td>
+		<td>@cd.voiceoverip.getOrElse("None")</td>
+	</tr>
+	}
+	@if(!cd.url1.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>URL 1<b/></td>
+		<td>@cd.url1.getOrElse("None")</td>
+	</tr>
+	}
+	@if(!cd.url2.getOrElse("").trim().equals("")) {
+	<tr>
+		<td><b>URL 2<b/></td>
+		<td>@cd.url2.getOrElse("None")</td>
+	</tr>
+	}
+	<tr>
+		<td><b>Tags<b/></td>
+		<td>@cd.tags.getOrElse("None")</td>
+	</tr>
+	
+	
+	
+	
+	
+	
+	
+	
+	</table>
+	</div>
+	<br/>
+	
+	
+	<div align="right">
+		<a class="button" href='mailto:@cd.email1.get'><b>Contact</b></a>
+	</div>
+	
+	
+	</article>
+	
+	
+  
+}
