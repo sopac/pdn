@@ -19,7 +19,7 @@ object DocumentRelation {
         DocumentRelation(row[Pk[Int]]("id"), row[Option[String]]("folder"), row[Option[String]]("description"), row[Option[Int]]("document_id"), row[Option[Int]]("treeorder"))).toList
   }
 
-  def get(id: Int, t: String): List[String] = DB.withConnection { // t = Topic, Country, Organisation, Meeting
+  def get(id: Int, t: String): List[String] = DB.withConnection { // t = Topic, Country, Organisation, Meeting/Conference
     var resList = new ListBuffer[String]()
     val drl = listDocumentRelation(id)
     var valid = false

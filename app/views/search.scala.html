@@ -1,0 +1,11 @@
+@(query: String, total: Int, sources: String, documents: List[Tuple3[String, String, String]] , contacts: List[Tuple3[String, String, String]])(implicit lang: Lang)
+
+@main("Search") {
+	<div style="font-family:  verdana, sans-serif; font-size: 90%; margin-top: -50px">
+   <h3>Search for <u>@query</u> and got @total results</h3>
+   </div>
+   
+   @documents.map {d =>
+   		@d._2<br/>
+   	}
+}

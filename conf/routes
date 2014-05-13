@@ -8,6 +8,9 @@ GET     /testDoc	                controllers.Application.testDocument
 GET     /photo/:id/:model           controllers.Application.photo(id: Int, model: String)
 GET     /download/:file				controllers.Application.download(file: String)
 
+#Search
+GET     /search/					controllers.Search.search(query: String, sources: String ?= "all")
+
 #Show
 GET     /wiki/:id					controllers.Application.showWiki(id: Int)
 GET     /alert/:id					controllers.Application.showAlert(id: Int)

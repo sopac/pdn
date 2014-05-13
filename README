@@ -24,4 +24,12 @@ sachindras@spc.int
 
 Note:
 pg_dump -Fc -b pdn_db > /tmp/pdn_db.bk
-pg_restore -d pdn_db pdn_db.bk
+pg_restore -d pdn_db /tmp/pdn_db.bk
+
+Solr Engine:
+To start or stop any of the components without starting or stopping the other components, you can use the start.sh/start.bat or stop.sh/stop.bat scripts with the -only parameter, followed by the component name.
+Core component: lwe-core
+UI component: lwe-ui
+Connectors component: connectors
+For example, this would start only the connectors using the start.sh script:
+start.sh -only connectors

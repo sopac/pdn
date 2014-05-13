@@ -84,7 +84,7 @@ object Application extends Controller {
   }
 
   def showDocument(id: Int) = Action {
-    Ok(views.html.document(Document.showDocument(id), DocumentMisc.showDocument(id), DocumentAuthors.listDocumentAuthor(id), DocumentMaterialType.showDocument(id), DocumentUser.showDocument(id), DocumentRelation.get(id, "Topic"), DocumentRelation.get(id, "Country"), DocumentRelation.get(id, "Organisation"), DocumentRelation.get(id, "Meeting")))
+    Ok(views.html.document(Document.showDocument(id), DocumentMisc.showDocument(id), DocumentAuthors.listDocumentAuthor(id), DocumentMaterialType.showDocument(id), DocumentUser.showDocument(id), DocumentRelation.get(id, "Topic"), DocumentRelation.get(id, "Country"), DocumentRelation.get(id, "Organisation"), DocumentRelation.get(id, "Meeting/Conference")))
   }
 
   def showDocumentText(id: Int) = Action {
