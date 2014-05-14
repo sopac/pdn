@@ -28,6 +28,13 @@ object Wiki {
         Wiki(row[Pk[Int]]("id"), row[Option[Date]]("expirydate"), row[Option[String]]("contenten"), row[Option[String]]("titleen"), row[Option[Int]]("placeholder"), row[Option[Int]]("contenttype"), row[Option[String]]("contentfr"), row[Option[Date]]("publishdate"), row[Option[String]]("externallink"), row[Option[String]]("titlefr"), row[Option[Array[Byte]]]("image"), row[Option[String]]("tags"))).toList.head
   }
 
+  def listWiki(content_type_id: Int): List[Wiki] = DB.withConnection {
+    implicit connection =>
+      val sql: SqlQuery = SQL("select * from wiki where contenttype=" + content_type_id + " order by placeholder ASC")
+      sql().map(row =>
+        Wiki(row[Pk[Int]]("id"), row[Option[Date]]("expirydate"), row[Option[String]]("contenten"), row[Option[String]]("titleen"), row[Option[Int]]("placeholder"), row[Option[Int]]("contenttype"), row[Option[String]]("contentfr"), row[Option[Date]]("publishdate"), row[Option[String]]("externallink"), row[Option[String]]("titlefr"), row[Option[Array[Byte]]]("image"), row[Option[String]]("tags"))).toList
+  }
+
   def listNews(num: Int): List[Wiki] = DB.withConnection {
     implicit connection =>
       val sql: SqlQuery = SQL("select * from wiki where contenttype=1 order by placeholder ASC LIMIT " + num)

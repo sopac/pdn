@@ -35,6 +35,15 @@ object Application extends Controller {
     Ok(views.html.wiki(Wiki.showWiki(id)))
   }
 
+  def listWiki = Action {
+    val pages = Wiki.listWiki(0)
+    val news = Wiki.listWiki(1)
+    val focus = Wiki.listWiki(2)
+    val initiatives = Wiki.listWiki(3)
+    val total = pages.size + news.size + focus.size + initiatives.size
+    Ok(views.html.wikis(pages, news, focus, initiatives, total))
+  }
+
   def listAlert(page: Int, num: Int, sort: String, sortType: String, filter: String) = Action {
     val list = Alert.listAlerts(page, num, sort, sortType, filter)
     val total = Alert.totalAlerts

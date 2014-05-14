@@ -10,66 +10,69 @@ import scala.concurrent.Future
 import play.api.libs.ws.WS._
 import scala.collection.mutable.ListBuffer
 import play.api.libs.json._
+import scala.concurrent._
+import scala.concurrent.duration._
+import java.net.URLEncoder
 
 object Search extends Controller {
 
   implicit val context = scala.concurrent.ExecutionContext.Implicits.global
 
   val SOLR_SERVER: String = Application.STATIC_URL.replace("/static/", ":8888/solr/pdn/lucid?")
-  val URL_APPEND: String = "&wt=json&indent=true"
+  val URL_APPEND: String = "&wt=json&indent=true&start=0&rows=15"
 
-  def searchContacts(query: String): ListBuffer[Tuple3[String, String, String]] = {
-    var contacts = new ListBuffer[Tuple3[String, String, String]]()
-    val source = "contacts"
-    val url = SOLR_SERVER + "q=" + query + "&fq=data_source_name:" + source + URL_APPEND
+  def searchSolr(query: String, source: String): ListBuffer[Tuple3[String, String, String]] = {
+    var resList = new ListBuffer[Tuple3[String, String, String]]()
+    val url = SOLR_SERVER + "q=" + URLEncoder.encode(query, "UTF-8") + "&fq=data_source_name:" + source + URL_APPEND
     val holder: WSRequestHolder = WS.url(url)
     val futureResponse: Future[Response] = holder.get()
-    futureResponse.map { response =>
-      val res = (response.json \ "response" \ "docs").as[List[JsObject]]
-      res.map { r =>
-        val id = (r \ "id").toString()
-        val title = (r \ "firstname").toString() + " " + (r \ "lastname").toString()
-        val description = (r \ "designation").toString() + " " + (r \ "organisation").toString() + " " + (r \ "country").toString()
-        val tuple = (id, title, description)
-        contacts += tuple
+    val response = Await.result(futureResponse, 10 seconds)
+    val res = (response.json \ "response" \ "docs").as[List[JsObject]]
+    res.map { r =>
+      if (source.equals("documents")) {
+        val id = (r \ "id")
+        val title = (r \ "title")(0)
+        var description = (r \ "description").toString() //+ " | " + (r \ "author")(0)
+        val author = (r \ "author")(0).toString()
+        if (description.trim().equals("")) description = "None"
+        if (!author.startsWith("JsUndefined")) description += " | " + author
+        val tuple = (id.toString().replaceAll("\"", "").trim(), title.toString().replaceAll("\"", "").trim(), description.toString().replaceAll("\"", "").trim())
+        resList += tuple
       }
-      return contacts
-    }
-  }
-
-  def searchDocuments(query: String): ListBuffer[Tuple3[String, String, String]] = {
-    var documents = new ListBuffer[Tuple3[String, String, String]]()
-    val source = "documents"
-    val url = SOLR_SERVER + "q=" + query + "&fq=data_source_name:" + source + URL_APPEND
-    val holder: WSRequestHolder = WS.url(url)
-    val futureResponse: Future[Response] = holder.get()
-    futureResponse.map { response =>
-      val res = (response.json \ "response" \ "docs").as[List[JsObject]]
-      res.map { r =>
+      if (source.equals("contacts")) {
         val id = (r \ "id").toString()
-        val title = (r \ "title").toString()
-        val description = (r \ "description").toString() + " | " + (r \ "author").toString()
-        val tuple = (id, title, description)
-        println(title)
-        documents += tuple
+        val title = (r \ "firstname") + " " + (r \ "lastname")
+        val description = (r \ "designation") + ", " + (r \ "organisation") + ", " + (r \ "country")
+        val tuple = (id.toString().replaceAll("\"", "").trim(), title.toString().replaceAll("\"", "").trim(), description.toString().replaceAll("\"", "").trim())
+        resList += tuple
+      }
+      if (source.equals("alerts")) {
+        val id = (r \ "id").toString()
+        val title = (r \ "subject")
+        var content = (r \ "content").toString().replaceAll("\n", " ")
+        if (content.length() > 155) content = content.substring(0, 155) + " ..."
+        val description = content + " | " + (r \ "daterecieved").toString().substring(0, 11)
+        val tuple = (id.toString().replaceAll("\"", "").trim(), title.toString().replaceAll("\"", "").trim(), description.toString().replaceAll("\"", "").trim())
+        resList += tuple
       }
     }
-    return documents
+    return resList
   }
 
   def search(query: String, sources: String) = Action { //source = all(default), alerts, contacts, documents, media, files, calendar
 
-    var alerts = new ListBuffer[Tuple3[String, String, String]]() //tuple - id, title, description, score
-    var contacts = new ListBuffer[Tuple3[String, String, String]]()
-    var calendar = new ListBuffer[Tuple3[String, String, String]]()
-    var documents = new ListBuffer[Tuple3[String, String, String]]()
-    var media = new ListBuffer[Tuple3[String, String, String]]()
+    //var alerts = new ListBuffer[Tuple3[String, String, String]]() //tuple - id, title, description, score
 
-    contacts = searchContacts(query)
-    documents = searchDocuments(query)
+    val documents = searchSolr(query, "documents").toList
+    val contacts = searchSolr(query, "contacts").toList
+    val alerts = searchSolr(query, "alerts").toList
+    val calendar = searchSolr(query, "calendar").toList
+    val media = searchSolr(query, "media").toList
+    val files = searchSolr(query, "files").toList
+    val wiki = searchSolr(query, "wiki").toList
 
-    val total: Int = contacts.size + documents.size + alerts.size + calendar.size + media.size
+    val total: Int = contacts.size + documents.size + alerts.size + calendar.size + media.size + files.size + wiki.size
 
-    Ok(views.html.search(query, total, sources, documents.toList, contacts.toList))
+    Ok(views.html.search(query, total, sources, documents, contacts, alerts, calendar, media, files, wiki))
   }
 }

@@ -28,7 +28,7 @@ GET     /calendars					controllers.Application.listCalendar(page: Int ?= 0, num:
 GET     /documents					controllers.Application.listDocument(page: Int ?= 0, num: Int ?= 10, sort: String ?= "id", sortType: String ?= "desc", filter: String ?= "")
 GET     /medias					    controllers.Application.listMedia(page: Int ?= 0, num: Int ?= 10, sort: String ?= "id", sortType: String ?= "desc", filter: String ?= "")
 GET     /contacts					controllers.Application.listContact(page: Int ?= 0, num: Int ?= 20, sort: String ?= "contact.firstname", sortType: String ?= "asc", filter: String ?= "")
-
+GET     /wikis                      controllers.Application.listWiki
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
