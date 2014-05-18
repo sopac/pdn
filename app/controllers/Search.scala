@@ -19,7 +19,7 @@ object Search extends Controller {
   implicit val context = scala.concurrent.ExecutionContext.Implicits.global
 
   val SOLR_SERVER: String = Application.STATIC_URL.replace("/static/", ":8888/solr/pdn/lucid?")
-  val URL_APPEND: String = "&wt=json&indent=true&start=0&rows=15"
+  val URL_APPEND: String = "&wt=json&indent=true&start=0&rows=10"
 
   def searchSolr(query: String, source: String): ListBuffer[Tuple3[String, String, String]] = {
     var resList = new ListBuffer[Tuple3[String, String, String]]()
@@ -31,7 +31,7 @@ object Search extends Controller {
     res.map { r =>
       if (source.equals("documents")) {
         val id = (r \ "id")
-        val title = (r \ "title")(0)
+        val title = (r \ "title")(1).toString + ", " + (r \ "title")(0).toString()
         var description = (r \ "description").toString() //+ " | " + (r \ "author")(0)
         val author = (r \ "author")(0).toString()
         if (description.trim().equals("")) description = "None"
@@ -49,9 +49,38 @@ object Search extends Controller {
       if (source.equals("alerts")) {
         val id = (r \ "id").toString()
         val title = (r \ "subject")
-        var content = (r \ "content").toString().replaceAll("\n", " ")
-        if (content.length() > 155) content = content.substring(0, 155) + " ..."
-        val description = content + " | " + (r \ "daterecieved").toString().substring(0, 11)
+        var content = (r \ "content").toString().replaceAll("\n\n", " ")
+        if (content.startsWith("<")) content = "HTML Content"
+        if (content.length() > 50) content = content.substring(0, 50) + " ..."
+        val description = content + "<br/>" + (r \ "daterecieved").toString().substring(0, 11)
+        val tuple = (id.toString().replaceAll("\"", "").trim(), title.toString().replaceAll("\"", "").trim(), description.toString().replaceAll("\"", "").trim())
+        resList += tuple
+      }
+      if (source.equals("calendar")) {
+        val id = (r \ "id").toString()
+        val title = (r \ "title")(0)
+        val description = (r \ "venue") + " " + (r \ "name")
+        val tuple = (id.toString().replaceAll("\"", "").trim(), title.toString().replaceAll("\"", "").trim(), description.toString().replaceAll("\"", "").trim())
+        resList += tuple
+      }
+      if (source.equals("media")) {
+        val id = (r \ "id").toString()
+        val title = (r \ "title")(0)
+        val description = (r \ "description")
+        val tuple = (id.toString().replaceAll("\"", "").trim(), title.toString().replaceAll("\"", "").trim(), description.toString().replaceAll("\"", "").trim())
+        resList += tuple
+      }
+      if (source.equals("files")) {
+        val id = "1000" //(r \ "id").toString()
+        val title = (r \ "title")(0)
+        val description = (r \ "author")(0)
+        val tuple = (id.toString().replaceAll("\"", "").trim(), title.toString().replaceAll("\"", "").trim(), description.toString().replaceAll("\"", "").trim())
+        resList += tuple
+      }
+      if (source.equals("wiki")) {
+        val id = (r \ "id").toString()
+        val title = (r \ "title")(0)
+        val description = (r \ "title")(0)
         val tuple = (id.toString().replaceAll("\"", "").trim(), title.toString().replaceAll("\"", "").trim(), description.toString().replaceAll("\"", "").trim())
         resList += tuple
       }

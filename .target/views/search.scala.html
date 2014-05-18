@@ -4,32 +4,94 @@
 <div style="font-family:  verdana, sans-serif; font-size: 90%; margin-top: -50px">
    <h3>Searched for <u>@query</u> and got @total key results</h3>
   
-    <h4>Documents</h4>
-    @documents.map {d =>
+  <table>
+  	<tr>
+  		<td width="50%" style="background-color: red; color:white;"><h4>Documents | <a style="font-weight: normal; color: white" href="#">More Results</a></h4></td>
+  		<td width="50%" style="background-color: green; color:white;"><h4>Contacts | <a style="font-weight: normal; color: white;" href="#">More Results</a></h4></td>
+  	</tr>
+  	<tr>
+  		<td valign="top">
+  	@if(documents.size == 0) { <i>Sorry, there are no Document results</i><br/><br/> }
+  	@documents.map {d =>
    		<a href="@routes.Application.showDocument(Integer.parseInt(d._1))">@d._2</a>
    		<br/>
    		<i>@d._3</i><br/>
    		<br/>
-   	}
-   	<hr/>
-   	
-   	<h4>Contacts</h4>
-   	@contacts.map {c =>
+   		}
+   	    </td>
+  		<td valign="top">
+  	@if(contacts.size == 0) { <i>Sorry, there are no Contacts results</i><br/><br/> }
+  	@contacts.map {c =>
    		<a href="@routes.Application.showContact(Integer.parseInt(c._1))">@c._2</a>
    		<br/>
    		<i>@c._3</i><br/>
-   	<br/>
+   		<br/>
    	}
-   	<hr/>
-   	
-   	<h4>Alerts</h4>
-   	@alerts.map {a =>
+  		</td>
+  	</tr>
+    <tr>
+    	<td style="background-color: blue; color:white"><h4>Alerts | <a style="font-weight: normal; color: white;" href="#">More Results</a></h4></td>
+    	<td style="background-color: yellow; color:black"><h4>Calendar | <a style="font-weight: normal; color: black;" href="#">More Results</a></h4></td>
+    </tr>
+    <tr>
+    	<td valign="top">
+    @if(alerts.size == 0) { <i>Sorry, there are no Alert results</i><br/><br/> }
+    @alerts.map {a =>
    		<a href="@routes.Application.showAlert(Integer.parseInt(a._1))">@a._2</a>
    		<br/>
-   		<i>@a._3</i><br/>
+   		<i>@Html(a._3)</i><br/>
+   		<br/>
+   	}
+   	   	</td>
+    	<td valign="top">
+    @if(calendar.size == 0) { <i>Sorry, there are no Calendar results</i><br/><br/> }
+    @calendar.map {c =>
+   		<a href="@routes.Application.showCalendar(Integer.parseInt(c._1))">@c._2</a>
+   		<br/>
+   		<i>@c._3</i><br/>
+   		<br/>
+   		}
+   	   	</td>
+    </tr>
+    <tr>
+    	<td style="background-color: lightblue; color:black"><h4>Media | <a style="font-weight: normal; color: white;" href="#">More Results</a></h4></td>
+    	<td style="background-color: black; color:white"><h4>Wiki | <a style="font-weight: normal; color: white;" href="#">More Results</a></h4></td>
+    </tr>	
+    <tr>
+    	<td valign="top">
+    @if(media.size == 0) { <i>Sorry, there are no Media results</i><br/> }
+    @media.map {m =>
+   		<a href="@routes.Application.showMedia(Integer.parseInt(m._1))">@m._2</a>
+   		<br/>
+   		<i>@m._3</i><br/>
+   	<br/>
+   	}	
+    	</td>
+    	<td valign="top">
+    @if(wiki.size == 0) { <i>Sorry, there are no Wiki results</i><br/> }
+    @wiki.map {w =>
+   		<a href="@routes.Application.showWiki(Integer.parseInt(w._1))">@w._2</a>
+   		<br/>
+   		<i>@w._3</i><br/>
+   	<br/>
+   	}	
+    	</td>
+    </tr> 	
+      
+   </table>
+      	
+</div>
+}
+
+
+
+	@*
+   	<h4>Files</h4>
+   	@files.map {f =>
+   		<a href="@routes.Application.showMedia(Integer.parseInt(f._1))">@f._2</a>
+   		<br/>
+   		<i>@f._3</i><br/>
    	<br/>
    	}
    	<hr/>
-   	
-</div>
-}
+   	*@
