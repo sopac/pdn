@@ -1,0 +1,60 @@
+@(pages: List[Wiki], news: List[Wiki], focus: List[Wiki], initiatives: List[Wiki], total: Int)(implicit lang: Lang)
+@import java.util.Date
+
+@main("Wiki Pages") {
+	
+	
+	
+	
+	<article style="font-family:  verdana, sans-serif; font-size: 80%">
+	<h3 style="background-color: yellow; margin-top: -20px; padding: 5px">Displaying <i><u>@total</u></i> Pages</h3>
+	<div class="row narrow three-col">
+		
+		<section class="info-box three-col-item first">
+		<h2>Pages (@pages.size)</h2>
+		@pages.map { w =>
+			<a href="@routes.Application.showWiki(w.id.get)">@w.titleen</a>
+			<br/>
+		}				
+		</section>
+		
+		<section class="info-box three-col-item first">
+		<h2>Initiatives (@initiatives.size)</h2>
+		@initiatives.map { w =>
+			<a href="@routes.Application.showWiki(w.id.get)">@w.titleen</a>
+			<br/>
+		}				
+		</section>
+		
+		
+				
+   </div>
+   
+   <div class="row narrow three-col">
+   
+   <section class="info-box three-col-item first">
+		<h2>News (@news.size)</h2>
+		@news.map { w =>
+			<a href="@routes.Application.showWiki(w.id.get)">@w.titleen</a>
+			<br/>
+		}				
+	</section>
+	
+	<section class="info-box three-col-item first">
+		<h2>Focus (@focus.size)</h2>
+		@focus.map { w =>
+			<a href="@routes.Application.showWiki(w.id.get)">@w.titleen</a>
+			<br/>
+		}				
+	</section>
+		
+	</div>
+		
+	</article>
+ 	
+ }
+ 	
+ 	
+ 	
+	  
+
